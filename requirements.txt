@@ -1,5 +1,9 @@
+annotated-types==0.7.0
 numpy==2.2.3
+opencv @ file:///build/source/modules/python/package/dist/opencv-4.11.0-py3-none-any.whl#sha256=63a73e6d64b8d0daa84e35dd5dbcea73f978d32e61058e4a22167cca8cfb07d1
 packaging==24.2
 pillow==11.1.0
+pydantic==2.10.6
+pydantic_core==2.27.2
 pytesseract==0.3.13
-opencv
+typing_extensions==4.12.2

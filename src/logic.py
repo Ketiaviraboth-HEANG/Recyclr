@@ -1,12 +1,17 @@
+from typing import List
 import cv2 as cv
+from cv2.typing import MatLike
 import pytesseract
 from PIL import Image
 import numpy as np
+from io import BytesIO
 
 
 # preprocessing -- this function converts stuff to grayscale first then to binary
-def preprocess_image(image_path):
-    image = cv.imread(image_path)
+def preprocess_image(image_bytes: bytes):
+
+    # reads from bytes, convert to grayscale then to nparray
+    image = np.array(Image.open(BytesIO(image_bytes)).convert("L"))
 
     scale_percent = 150
     width = int(image.shape[1] * scale_percent / 100)
@@ -14,12 +19,10 @@ def preprocess_image(image_path):
     dim = (width, height)
     image = cv.resize(image, dim, interpolation=cv.INTER_LINEAR)
 
-    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-
-    gray = cv.bilateralFilter(gray, 11, 17, 17)
+    filtered = cv.bilateralFilter(image, 11, 17, 17)
 
     thresh = cv.adaptiveThreshold(
-        gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 25, 15
+        filtered, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 25, 15
     )
 
     kernel = np.ones((1, 1), np.uint8)
@@ -29,14 +32,14 @@ def preprocess_image(image_path):
 
 
 # text extraction
-def extract_text(image):
+def extract_text(image: MatLike) -> str:
     custom_config = r"--oem 3 --psm 4"
     text = pytesseract.image_to_string(image, config=custom_config)
     return text
 
 
 # excluding keywords, so we only take the item bought
-def get_items_only(text):
+def get_items_only(text: str):
     excluded_keywords = [
         "SUBTOTAL",
         "TOTAL",
@@ -68,7 +71,7 @@ def get_items_only(text):
     ]
 
     lines = text.splitlines()
-    items = []
+    items: List[str] = []
 
     for line in lines:
         clean_line = line.strip().upper()
@@ -83,9 +86,8 @@ def get_items_only(text):
     return items
 
 
-def main():
-    image_path = "img_2.png"
-    processed_image = preprocess_image(image_path)
+def analyze_receipt(image_bytes: bytes):
+    processed_image = preprocess_image(image_bytes)
     text_result = extract_text(processed_image)
 
     print("📝 OCR Result:")
@@ -97,6 +99,13 @@ def main():
     for item in items_purchased:
         print(item)
 
+    data = {
+        "items": items_purchased,
+        "text": text_result,
+    }
 
-if __name__ == "__main__":
-    main()
+    return data
+
+
+# if __name__ == "__main__":
+#     main()

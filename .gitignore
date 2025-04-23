@@ -2,3 +2,4 @@
 .venv
 .envrc
 .direnv
+__pycache__/
