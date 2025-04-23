@@ -1,0 +1,6 @@
+services:
+  api:
+    image: Recyclr/api-service:0.0.0
+    build: .
+    ports:
+      - "8000:${APP_PORT:-8000}"

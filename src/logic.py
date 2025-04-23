@@ -75,9 +75,10 @@ def get_items_only(text: str):
 
     for line in lines:
         clean_line = line.strip().upper()
-        if any(keyword in clean_line for keyword in excluded_keywords):
-            continue
-        if clean_line == "":
+        if (
+            any(keyword in clean_line for keyword in excluded_keywords)
+            or clean_line == ""
+        ):
             continue
         if any(char.isdigit() for char in clean_line) and any(
             char.isalpha() for char in clean_line
