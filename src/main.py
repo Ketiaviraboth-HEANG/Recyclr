@@ -17,4 +17,9 @@ async def upload_receipt(file: UploadFile = File(...)):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("APP_PORT", 8000)))
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        reload=True,
+        port=int(os.environ.get("APP_PORT", 8000)),
+    )

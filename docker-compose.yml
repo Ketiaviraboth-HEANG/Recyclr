@@ -4,3 +4,8 @@ services:
     build: .
     ports:
       - "8000:${APP_PORT:-8000}"
+    develop:
+      watch:
+        - path: src
+          action: sync
+          target: /app
