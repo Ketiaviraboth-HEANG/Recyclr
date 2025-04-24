@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-docker compose up --build -d
+prisma generate --schema=prisma/schema.prisma
+python src/main.py

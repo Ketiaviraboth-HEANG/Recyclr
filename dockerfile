@@ -1,12 +1,8 @@
-FROM python:3
+FROM python:3.9-alpine
 WORKDIR /app
 COPY requirements.txt .
-RUN apt-get update && apt-get install -y \
-  libgl1-mesa-glx \
-  tesseract-ocr \
-  libglib2.0-0 && \
-  rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache tesseract-ocr nodejs npm gcc g++ make cmake ninja linux-headers bash openssl tesseract-ocr-data-eng
 RUN pip install --no-cache-dir -r requirements.txt
-COPY src .
+COPY . .
 
-CMD ["python", "main.py"]
+CMD ["./start-app.sh"]

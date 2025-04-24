@@ -4,3 +4,4 @@
 .direnv
 .env
 __pycache__/
+/database/

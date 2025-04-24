@@ -6,6 +6,20 @@ services:
       - "8000:${APP_PORT:-8000}"
     develop:
       watch:
-        - path: src
+        - path: .
           action: sync
           target: /app
+    environment:
+      DB_URL: postgresql://postgres:supersecurepassword@db:5432/postgres
+
+  db:
+    image: pgvector/pgvector:pg17
+    shm_size: 128mb
+    restart: unless-stopped
+    volumes:
+      - ./database:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: supersecurepassword
+      POSTGRES_USER: postgres
