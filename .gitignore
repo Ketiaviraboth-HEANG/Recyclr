@@ -1,0 +1,6 @@
+*.nix
+.venv
+.envrc
+.direnv
+.env
+__pycache__/
