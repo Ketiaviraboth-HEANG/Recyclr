@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 
-from logic import analyze_receipt
+from plastic_tracker import analyze_receipt
 
 app = FastAPI()
 
