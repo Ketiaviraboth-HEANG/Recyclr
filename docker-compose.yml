@@ -1,9 +1,9 @@
 services:
-  api:
-    image: Recyclr/api-service:0.0.0
+  steamlit:
+    image: Recyclr/steamlit:0.0.0
     build: .
     ports:
-      - "8000:${APP_PORT:-8000}"
+      - "8501:8501"
     develop:
       watch:
         - path: src
